@@ -9,6 +9,7 @@ import os
 import sqlite3
 import datetime
 import pymongo
+from typing import Literal
 
 st.header("Nanoscript")
 #fastqfile = st.file_uploader(label = "Загрузите ваш FASTQ файл" )
