@@ -2,7 +2,8 @@ import subprocess
 import os
 import tempfile
 import pexpect
-#
+import paramiko
+
 myfile = "/home/common/kumondorova.a/16s/input"
 hostname="calc.cod.phystech.edu"
 username='kumondorova.a'
@@ -37,4 +38,17 @@ def scp(host, user, password, from_dir, to_dir, timeout=300, recursive=False):
 
     return stdout
 
-scp(hostname,username,password,myfile,tofolderinclust)
+def scptrans(host,user,passw,filefrom,fileto):
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect(host, username=user, password=f'{passw}')
+    scp = ssh.open_sftp()
+    scp.put(filefrom,fileto)
+    # Close the SCP client
+    scp.close()
+
+    # Close the SSH client
+    ssh.close() 
+    
+    return print('File was transfered to cluster via SCP')
+
