@@ -1,0 +1,159 @@
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+    </style>
+    <script
+      src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js"
+      defer
+    ></script>
+
+    
+  </head>
+
+  <body class="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
+
+    {% with messages = get_flashed_messages(with_categories=true)%}
+    {%if messages%}
+      {% for category, message in messages%}
+      {%if category == 'error'%}
+      <div class="alert alert-danger alert-dismissable fade show" role="alert">
+        {{message}}
+        <button type='button' class="close" data-dismiss="alert">
+          <span aria-hidden="true">&times;</span>
+        </button>  
+      </div>
+      {% else %}
+      <div class="alert alert-succes alert-dismissable fade show" role="alert">
+        {{message}}
+        <button type='button' class="close" data-dismiss="alert">
+          <span aria-hidden="true">&times;</span>
+        </button>  
+      </div>
+      {%endif%}
+      {%endfor%} 
+    {%endif%}
+    
+    {%endwith%}
+
+
+    <div
+      class="max-w-screen-xl m-0 sm:m-20 bg-white shadow sm:rounded-lg flex justify-center flex-1"
+    >
+        <div class="mt-12 flex flex-col items-center">
+          <h1 class="text-2xl xl:text-3xl font-extrabold">
+            Nanoscript регистрация
+          </h1>
+          <div class="w-full flex-1 mt-8">
+            <div class="flex flex-col items-center">
+              <button
+                class="w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline"
+              >
+                <span class="ml-4">
+                  Главная страница
+                </span>
+              </button>
+
+              <button
+                class="w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5"
+              >
+              
+                <span class="ml-4">
+                  Помощь
+                </span>
+              </button>
+            </div>
+          <form method="POST">
+            <div class="my-12 border-b text-center">
+              <div
+                class="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2"
+              >
+                Уже есть аккаунт? <a href="{{url_for('views.sign_in')}}"> Войдите </a>
+              </div>
+            </div>
+
+            <div class="mx-auto max-w-xs">
+              <input 
+                class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+                type="email" id="email" name="email"
+                placeholder="Электронная почта"
+              />
+              <input
+                class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                type="password1" id="password1" name="password1"
+                placeholder="Пароль"
+              />
+              <input
+                class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                type="password2" name="password2" id="password2"
+                placeholder="Подтвердить Пароль"
+            />
+              <button type="submit"
+                class="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+              >
+
+            </form>
+                <svg
+                  class="w-6 h-6 -ml-2"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                  <circle cx="8.5" cy="7" r="4" />
+                  <path d="M20 8v6M23 11h-6" />
+                </svg>
+                <span class="ml-3">
+                  Зарегестрироваться
+                </span>
+              </button>
+              <p class="mt-6 text-xs text-gray-600 text-center">
+                
+                <a href="#" class="border-b border-gray-500 border-dotted">
+                  
+                </a>
+                
+                <a href="#" class="border-b border-gray-500 border-dotted">
+                  
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex-1 bg-indigo-0 text-center hidden lg:flex">
+        <div
+          class="m-12 xl:m-16 w-full bg-contain bg-center bg-no-repeat"
+          style="background-image: url('https://earimediaprodweb.azurewebsites.net/Api/v1/Multimedia/83d56b06-237e-4d96-bfc6-6f1319aed449/Rendition/low-res/Content/Public');"
+        ></div>
+      </div>
+    </div>
+  </body>
+</html>
