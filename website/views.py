@@ -1,45 +1,46 @@
-from flask import Blueprint, render_template, request, flash
-from .extensions import mongo
+from flask import Blueprint, render_template, request, flash, jsonify, redirect
+from flask_login import login_required, current_user
+from .models import Upload
+import os
+from . import db
+import json
 
 
 views = Blueprint('views', __name__)
 
 
-@views.route('/sign_up/',methods=['GET','POST'])
-def sign_up():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        email = request.form.get('email')
-        password1 = request.form.get('password1')
-        password2 = request.form.get('password2')
-        db = SQLAlchemy(app)
+@views.route('/', methods=['GET', 'POST'])
+@login_required
+def home():
+    if request.method == 'POST': 
+        uploaded_file = request.files['file_upload']
+        if uploaded_file.filename != '':
+            uploaded_file.save(f'./uploads/{uploaded_file.filename}')
 
-        if len(email)<4:
-            flash('Email должен быть длиннее чем 4 символа, перепроверьте его!',category='error') 
-            pass 
-        #elif mongo.db.count({"email":email}, { limit: 1 }) == 1:
-            #flash('Данный email уже зарегестрирован', category='error')
+            if 1==1:
+                new_file = Upload(filename=uploaded_file.filename, user_id=current_user.id)  #providing the schema for the note 
+                db.session.add(new_file) #adding the note to the database 
+                db.session.commit()
+                flash('Файл загружен', category='success')
 
-        elif password1 != password2:
-            flash('Пароли не совпадают, перепроверьте их!',category='error')
-            pass
-        elif len(password1)<6:
-            flash('Пароль должен содержать больше 6-ти символов',category='error')
-            pass
-        else:
-            flash('Аккаунт был зарегестрирован!',category='success')
-        
-        users_collection.insert_one({'username': username, 'email': email, 'password': password1})
+    return render_template("home.html", user=current_user)
 
+@views.route('/send/<int:id>')
+def send(id):
+    #file_to_cluster = Upload.query.get_or_404(id)
+   # dir = f"uploads/{file_to_cluster.filename}"
+    return redirect('/')
 
+@views.route('/delete/<int:id>')
+def delete(id):
+    update_to_delete = Upload.query.get_or_404(id)
 
-
-
-    return render_template("sign_up.html") 
-
-@views.route('/login/',methods=['GET','POST'])
-def sign_in():
-    login_data = request.form
-    return render_template("sign_in.html") 
-
+    try: 
+        db.session.delete(update_to_delete)
+        db.session.commit()
+        #update_to_delete.filename Дает имя файла с расширением
+        return redirect('/')
+    
+    except: 
+        return "Возникла проблема в удалении загруженного файла"
 

@@ -1,0 +1,24 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+%}
+<h1 align="center">Ваши файлы</h1>
+<ul class="list-group list-group-flush" id="uploads">
+  {% for upload in user.uploads %}
+  <li method="POST" class="list-group-item">
+    {{ upload.filename }}
+    <br>
+    {{upload.date}}
+    <br>
+    <a href="/send/{{upload.id}}" class="btn btn-outline-primary"> Отправить на обработку </a>
+    <a href="/delete/{{upload.id}}" class="btn btn-outline-danger"> Удалить </a>
+  </li>
+  {% endfor %}
+</ul>
+
+<form method="POST" action="" enctype="multipart/form-data" >
+  <div class="form-group">
+    <label for="exampleFormControlFile1">Загрузите FASTQ файл для обработки</label>
+    <input type="file" name="file_upload" class="form-control-file" id="exampleFormControlFile1">
+    <input type="submit" value="Submit">
+  </div>
+</form>
+{% endblock %}
