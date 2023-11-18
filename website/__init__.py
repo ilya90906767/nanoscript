@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from os import path
 import os
 from flask_login import LoginManager
+#from celery import Celery
 
 db = SQLAlchemy()
 DB_NAME = "database.db"
@@ -18,6 +19,12 @@ def create_app():
     UPLOAD_FOLDER  ='./uploads' 
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER 
     db.init_app(app)
+
+
+    #app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
+    #app.config['CELERY_RESULT_BACKEND'] = 'redis://localhost:6379/0'
+    #celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
+    #celery.conf.update(app.config)
 
     from .views import views
     from .auth import auth
@@ -39,7 +46,6 @@ def create_app():
         return User.query.get(int(id))
 
     return app
-
 
 def create_database(app):
     if not path.exists('website/' + DB_NAME):

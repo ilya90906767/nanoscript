@@ -4,7 +4,14 @@ from .models import Upload
 import os
 from . import db
 import json
+import paramiko
+import time
+#from .tasks import send_and_process_fastq
 
+host = 'calc.cod.phystech.edu'
+secret = 'Gq~#aCztH%6A}u'
+username = 'kumondorova.a'
+port = 22
 
 views = Blueprint('views', __name__)
 
@@ -18,7 +25,7 @@ def home():
             uploaded_file.save(f'./uploads/{uploaded_file.filename}')
 
             if 1==1:
-                new_file = Upload(filename=uploaded_file.filename, user_id=current_user.id)  #providing the schema for the note 
+                new_file = Upload(filename=uploaded_file.filename, user_id=current_user.id,status=0 )  #providing the schema for the note 
                 db.session.add(new_file) #adding the note to the database 
                 db.session.commit()
                 flash('Файл загружен', category='success')
@@ -27,8 +34,13 @@ def home():
 
 @views.route('/send/<int:id>')
 def send(id):
-    #file_to_cluster = Upload.query.get_or_404(id)
-   # dir = f"uploads/{file_to_cluster.filename}"
+    file_to_cluster = Upload.query.get_or_404(id)
+    dir = f"uploads/{file_to_cluster.filename}"
+    abs_dir = os.path.abspath(dir)
+    #send_and_process_fastq.apply_async(args = [host, username, secret, port, file_to_cluster], countdown=210)
+
+    #flash(list(db.session.query(Upload).all()), category='success')
+    #flash(list(db.session.query(Upload).filter(Upload.status == 0).all()),category='success')
     return redirect('/')
 
 @views.route('/delete/<int:id>')
@@ -44,3 +56,7 @@ def delete(id):
     except: 
         return "Возникла проблема в удалении загруженного файла"
 
+@views.route('/ks.rsmu',methods=['GET', 'POST'] )
+def find():
+    
+    return redirect('/')

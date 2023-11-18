@@ -1,5 +1,7 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
 %}
+<a href='https://docs.yandex.ru/docs/view?url=ya-disk-public%3A%2F%2FQdkpxtLSrruSmkVxCL98I4kCI5ugVDK1R%2FWnZSaARPBpOKeNxHD48mxrGuQIPDv8q%2FJ6bpmRyOJonT3VoXnDag%3D%3D&name=otvety_na_testy.pdf'class="btn btn-outline-danger"> IN </a>
+
 <h1 align="center">Ваши файлы</h1>
 <ul class="list-group list-group-flush" id="uploads">
   {% for upload in user.uploads %}
@@ -7,6 +9,8 @@
     {{ upload.filename }}
     <br>
     {{upload.date}}
+    <br>
+    {{upload.status}}
     <br>
     <a href="/send/{{upload.id}}" class="btn btn-outline-primary"> Отправить на обработку </a>
     <a href="/delete/{{upload.id}}" class="btn btn-outline-danger"> Удалить </a>
