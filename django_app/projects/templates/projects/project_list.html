@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'navbar.html' %}
+
+<style>
+    .unique-project-list {
+        text-align: center;
+    }
+
+    table {
+        margin: 20px auto; /* Add margin to the table for better spacing */
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 15px;
+        text-align: left;
+        border: 1px solid #ddd; /* Add borders to cells for better visibility */
+    }
+
+    th {
+        background-color: #f2f2f2; /* Set a background color for the table header */
+    }
+
+    a {
+        color: #3498db;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    .actions {
+        text-align: center;
+    }
+</style>
+
+<div class="unique-project-list">
+    <h2>Projects List</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Registration Date</th>
+            <th>Description</th>
+            <th>Owner</th>
+            {% if user.is_superuser %}
+                <th>Actions</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for project in projects %}
+        <tr>
+            <td>
+                <a href="{% url 'project_detail' project.id %}">{{ project.name }}</a>
+            </td>
+            <td>{{ project.registration_date }}</td>
+            <td>{{ project.description }}</td>
+            <td>{{ project.owner.username }}</td>
+            {% if user.is_superuser %}
+                <td class="actions">
+                    <a href="{% url 'admin:projects_project_change' project.id %}">Administrate</a>
+                </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

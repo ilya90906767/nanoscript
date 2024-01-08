@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'navbar.html' %}
+
+<div id="map-container" style="height: 80vh; width: 80%; margin: auto;"></div>
+
+<!-- Include Leaflet CSS and JavaScript -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+    // Use a more unique ID for the map container
+    var map = L.map('map-container').setView([{{ samples.first.latitude }}, {{ samples.first.longitude }}], 10);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    {% for sample in samples %}
+        var marker = L.marker([{{ sample.latitude }}, {{ sample.longitude }}]).addTo(map);
+        marker.bindPopup("Project ID: {{ sample.project_id }}<br>Sample ID: {{ sample.id }}<br>Coordinates: {{ sample.latitude }}, {{ sample.longitude }}");
+    {% endfor %}
+</script>
+
+{% endblock %}

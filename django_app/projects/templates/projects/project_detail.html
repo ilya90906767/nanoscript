@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'navbar.html' %}
+
+<style>
+    .project-details {
+        text-align: center;
+    }
+
+    table {
+        margin: 20px auto; /* Add margin to the table for better spacing */
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 15px;
+        text-align: left;
+        border: 1px solid #ddd; /* Add borders to cells for better visibility */
+    }
+
+    th {
+        background-color: #f2f2f2; /* Set a background color for the table header */
+    }
+
+    a {
+        color: #3498db;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="project-details">
+    <h2 style="padding: 10px;">{{ project.name }} Details</h2>
+    <p>Registration Date: {{ project.registration_date }}</p>
+    <p>Description: {{ project.description }}</p>
+    <p>Owner: {{ project.owner.username }}</p>
+    <!-- Add more details or include related data as needed -->
+    <p>Number of Experiments: {{ experiments.count }}</p>
+    <p>Number of Samples: {{ samples.count }}</p>
+    <p>Number of Observations: {{ observations.count }}</p>
+
+    <!-- Display observations for each sample -->
+    <h3>Observations for each Sample:</h3>
+    <table class="observations-table">
+        <thead>
+        <tr>
+            <th>Experiment</th>
+            <th>Sample</th>
+            <th>Country</th>
+            <th>Species</th>
+            <th>Genotype</th>
+            <th>Date</th>
+            <th>Condition</th>
+            <th>Temperature</th>
+            <th>Timepoint</th>
+            <th>PAM</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for experiment in experiments %}
+            {% for sample in experiment.samples.all %}
+                {% for observation in sample.observation_set.all %}
+                    <tr>
+                        <td>{{ experiment.id }}</td>
+                        <td>{{ sample.id }}</td>
+                        <td>{{ sample.country }}</td>
+                        <td>{{ sample.species }}</td>
+                        <td>{{ observation.genotype }}</td>
+                        <td>{{ observation.observation_date }}</td>
+                        <td>{{ observation.condition }}</td>
+                        <td>{{ observation.temperature }}</td>
+                        <td>{{ observation.timepoint }}</td>
+                        <td>{{ observation.pam_value }}</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
